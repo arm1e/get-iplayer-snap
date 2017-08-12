@@ -9,7 +9,7 @@ confinement: devmode
 
 apps:
     get-iplayer:
-        command: get_iplayer
+        command: wrapper.sh
         plugs:
         - network 
 
@@ -17,9 +17,6 @@ parts:
     get-iplayer:
         source: https://github.com/get-iplayer/get_iplayer.git
         plugin: dump
-        install: |
-            cp ./get_iplayer $SNAPCRAFT_PART_INSTALL/
-            
         stage-packages:
         - perl
         - libwww-perl
@@ -30,6 +27,10 @@ parts:
         - libcgi-pm-perl
         - atomicparsley
         - ffmpeg
-        
-        
-    
+    wrapper:
+      plugin: nil
+      source: .
+      install: |
+        cp wrapper.sh $SNAPCRAFT_PART_INSTALL/
+      after:
+        - get-iplayer
